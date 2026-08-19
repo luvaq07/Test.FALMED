@@ -1,0 +1,6 @@
+﻿/* Archivo principal de estilos */
+/* La mayoría de estilos se manejan con TailwindCSS, aquí van configuraciones globales */
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
