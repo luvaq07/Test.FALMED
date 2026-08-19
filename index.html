@@ -1,0 +1,91 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Validador de Certificados - Falmed</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: { sans: ['Inter', 'sans-serif'] },
+                    colors: {
+                        brand: { blue: '#1c3d6c', red: '#d31f26' }
+                    }
+                }
+            }
+        }
+    </script>
+</head>
+<body class="bg-gradient-to-br from-slate-100 to-slate-200 min-h-screen flex items-center justify-center p-4">
+    <div class="bg-white max-w-md w-full rounded-2xl shadow-2xl overflow-hidden border border-gray-100 transform transition-all hover:-translate-y-1 hover:shadow-3xl duration-300">
+        <div class="h-2 w-full bg-brand-red"></div> 
+        <div class="p-8">
+            <div class="text-center mb-8">
+                <img src="logo.png" alt="Falmed Logo" class="h-16 mx-auto mb-6 object-contain">
+                <h1 class="text-2xl font-bold text-gray-800">Verificación de Documentos</h1>
+                <p class="text-sm text-gray-500 mt-2 leading-relaxed">Ingrese la información impresa al pie del certificado para comprobar su autenticidad y vigencia.</p>
+            </div>
+            <form id="validation-form" class="space-y-5">
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="folio">Número de Folio</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z" /></svg>
+                        </div>
+                        <input type="text" id="folio" placeholder="Ej: FAL-123456" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-colors outline-none bg-gray-50 focus:bg-white" required>
+                    </div>
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-1" for="codigo">Código de Verificación</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <svg class="h-5 w-5 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" /></svg>
+                        </div>
+                        <input type="text" id="codigo" placeholder="Ej: A8B9C0" class="w-full pl-10 pr-4 py-3 rounded-lg border border-gray-300 focus:ring-2 focus:ring-brand-blue focus:border-brand-blue transition-colors outline-none bg-gray-50 focus:bg-white" required>
+                    </div>
+                </div>
+                <button type="submit" id="btn-submit" class="w-full bg-brand-blue hover:bg-[#122747] text-white font-medium py-3.5 px-4 rounded-lg shadow-md hover:shadow-lg transition-all flex justify-center items-center gap-2 mt-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <span>Validar Certificado</span>
+                </button>
+            </form>
+            <div id="result-msg" class="hidden mt-6 p-4 rounded-lg bg-green-50 border border-green-200 animate-pulse">
+                <div class="flex items-start">
+                    <svg class="h-5 w-5 text-green-500 mt-0.5 mr-2 flex-shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" /></svg>
+                    <div>
+                        <h4 class="text-sm font-bold text-green-800">Documento Válido</h4>
+                        <p class="text-xs text-green-700 mt-1">El certificado coincide con nuestros registros y se encuentra vigente. Mostrando copia original...</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="bg-gray-50 px-8 py-4 border-t border-gray-100 flex justify-between items-center">
+            <span class="text-xs text-gray-500 font-medium">© 2026 FALMED</span>
+            <a href="#" class="text-xs text-brand-blue hover:underline font-medium">¿Necesita ayuda?</a>
+        </div>
+    </div>
+    <script>
+        document.getElementById('validation-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btn-submit');
+            const originalContent = btn.innerHTML;
+            const resultMsg = document.getElementById('result-msg');
+            resultMsg.classList.add('hidden');
+            btn.innerHTML = '<svg class="animate-spin -ml-1 mr-3 h-5 w-5 text-white inline" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"><circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle><path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path></svg> Conectando...';
+            btn.disabled = true;
+            btn.classList.add('opacity-90', 'cursor-not-allowed');
+            setTimeout(() => {
+                btn.innerHTML = originalContent;
+                btn.disabled = false;
+                btn.classList.remove('opacity-90', 'cursor-not-allowed');
+                resultMsg.classList.remove('hidden');
+                document.getElementById('folio').value = '';
+                document.getElementById('codigo').value = '';
+            }, 1800);
+        });
+    </script>
+</body>
+</html>
